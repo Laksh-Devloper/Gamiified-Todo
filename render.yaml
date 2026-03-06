@@ -1,10 +1,12 @@
 services:
+  # ===== BACKEND =====
   - type: web
     name: kimetsu-todo-backend
     env: node
     plan: free
-    buildCommand: cd backend && npm install && npm run build
-    startCommand: cd backend && npm start
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: node dist/index.js
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -16,17 +18,24 @@ services:
         value: production
       - key: FRONTEND_URL
         value: https://kimetsu-todo-frontend.onrender.com
+      - key: PORT
+        value: 10000
 
+  # ===== FRONTEND =====
   - type: web
     name: kimetsu-todo-frontend
     env: node
     plan: free
-    buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm start
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     envVars:
       - key: NEXT_PUBLIC_API_URL
         value: https://kimetsu-todo-backend.onrender.com
+      - key: NODE_ENV
+        value: production
 
+# ===== DATABASE =====
 databases:
   - name: kimetsu-todo-db
     plan: free
