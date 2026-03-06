@@ -1,0 +1,7 @@
+# Gamified Anime Todo
+node_modules/
+.env
+.env.local
+dist/
+.next/
+*.log
