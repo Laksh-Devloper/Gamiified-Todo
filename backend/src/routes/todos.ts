@@ -16,8 +16,8 @@ const calculateLevel = (xp: number) => Math.floor(Math.sqrt(xp / 100)) + 1;
 
 const checkAndGrantAchievements = async (userId: string) => {
     const todosResult = await query('SELECT * FROM todos WHERE user_id = $1', [userId]);
-    const todos = todosResult.rows;
-    const completed = todos.filter((t) => t.is_completed);
+    const todos: any[] = todosResult.rows;
+    const completed: any[] = todos.filter((t: any) => t.is_completed);
     const userResult = await query('SELECT * FROM users WHERE id = $1', [userId]);
     const user = userResult.rows[0];
 
@@ -27,10 +27,10 @@ const checkAndGrantAchievements = async (userId: string) => {
     if (completed.length >= 50) toGrant.push('water_breathing');
     if (user.level >= 10) toGrant.push('demon_slayer');
     if (user.streak >= 7) toGrant.push('flame_pillar');
-    if (completed.some((t) => t.priority === 'boss')) toGrant.push('moon_breathing');
+    if (completed.some((t: any) => t.priority === 'boss')) toGrant.push('moon_breathing');
 
     const today = new Date().toISOString().split('T')[0];
-    const todayCompleted = completed.filter((t) => {
+    const todayCompleted = completed.filter((t: any) => {
         const d = t.completed_at ? new Date(t.completed_at).toISOString().split('T')[0] : null;
         return d === today;
     });
